@@ -245,14 +245,13 @@ b {
     max-width: 300px;
     width: 100%;
     margin: 0 auto 2rem auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
 }
 
 .hero-logo-words {
     width: 100%;
     height: auto;
+    display: block;
     position: relative;
     z-index: 2;
     filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
