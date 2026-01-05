@@ -726,6 +726,7 @@ b {
     display: flex;
     gap: 1rem;
     margin-top: 2.5rem;
+    justify-content: flex-start;
 }
 
 .social-link {
@@ -738,8 +739,8 @@ b {
 }
 
 .social-link svg {
-    width: 32px;
-    height: 32px;
+    width: 26px;
+    height: 26px;
 }
 
 .social-link:hover {
