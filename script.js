@@ -152,45 +152,90 @@ window.addEventListener('resize', updateCarousel);
 const lightbox = document.getElementById('lightbox');
 const lightboxImage = document.getElementById('lightboxImage');
 const lightboxClose = document.getElementById('lightboxClose');
+const lightboxPrev = document.getElementById('lightboxPrev');
+const lightboxNext = document.getElementById('lightboxNext');
 
-// Add click event to all gallery items
-document.querySelectorAll('.gallery-item').forEach(item => {
+let currentLightboxIndex = 0;
+let galleryItems = [];
+
+// Build gallery items array
+function buildGalleryArray() {
+    galleryItems = Array.from(document.querySelectorAll('.gallery-item')).filter(item => {
+        const img = item.querySelector('img');
+        return img && img.tagName === 'IMG';
+    });
+}
+
+// Show image in lightbox
+function showLightboxImage(index) {
+    if (galleryItems.length === 0) return;
+
+    currentLightboxIndex = (index + galleryItems.length) % galleryItems.length;
+    const item = galleryItems[currentLightboxIndex];
+    const fullsizeSrc = item.getAttribute('data-fullsize') || item.querySelector('img').src;
+    const imgElement = item.querySelector('img');
+
+    lightboxImage.src = fullsizeSrc;
+    lightboxImage.alt = imgElement.alt;
+}
+
+// Open lightbox
+buildGalleryArray();
+
+document.querySelectorAll('.gallery-item').forEach((item, index) => {
     item.addEventListener('click', (e) => {
         const imgElement = item.querySelector('img') || item.querySelector('.placeholder-image');
         if (imgElement && imgElement.tagName === 'IMG') {
-            // Use full-size image from data-fullsize attribute, fallback to thumbnail src
-            const fullsizeSrc = item.getAttribute('data-fullsize') || imgElement.src;
-            lightboxImage.src = fullsizeSrc;
-            lightboxImage.alt = imgElement.alt;
+            currentLightboxIndex = galleryItems.indexOf(item);
+            showLightboxImage(currentLightboxIndex);
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
     });
 });
 
-// Close lightbox when clicking close button
-lightboxClose.addEventListener('click', (e) => {
-    e.stopPropagation();
+// Close lightbox
+function closeLightbox() {
     lightbox.classList.remove('active');
     document.body.style.overflow = 'auto';
+}
+
+lightboxClose.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeLightbox();
+});
+
+// Navigation arrows
+lightboxPrev.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showLightboxImage(currentLightboxIndex - 1);
+});
+
+lightboxNext.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showLightboxImage(currentLightboxIndex + 1);
 });
 
 // Close lightbox when clicking on the background
 lightbox.addEventListener('click', () => {
-    lightbox.classList.remove('active');
-    document.body.style.overflow = 'auto';
+    closeLightbox();
 });
 
-// Prevent closing when clicking on the image itself
+// Prevent closing when clicking on the image or nav buttons
 lightboxImage.addEventListener('click', (e) => {
     e.stopPropagation();
 });
 
-// Close lightbox with Escape key
+// Keyboard navigation
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = 'auto';
+    if (!lightbox.classList.contains('active')) return;
+
+    if (e.key === 'Escape') {
+        closeLightbox();
+    } else if (e.key === 'ArrowLeft') {
+        showLightboxImage(currentLightboxIndex - 1);
+    } else if (e.key === 'ArrowRight') {
+        showLightboxImage(currentLightboxIndex + 1);
     }
 });
 

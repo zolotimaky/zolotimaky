@@ -543,7 +543,7 @@ b {
 .gallery-item img {
     width: 100%;
     height: 320px;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
 }
 
@@ -579,17 +579,23 @@ b {
 
 .view-full-gallery {
     display: inline-block;
+    padding: 8px 21px;
+    border: 1.5px solid #e87605;
+    background: transparent;
     color: #e87605;
+    font-size: 0.64rem;
+    text-align: center;
     text-decoration: none;
-    font-size: 1rem;
-    font-weight: 600;
-    padding: 0.5rem 0;
-    border-bottom: 2px solid transparent;
+    font-family: 'Aptos', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
     transition: all 0.3s ease;
 }
 
 .view-full-gallery:hover {
-    border-bottom: 2px solid #e87605;
+    background: #e87605;
+    color: var(--bg-white);
 }
 
 /* Lightbox Modal */
@@ -600,7 +606,7 @@ b {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(255, 255, 255, 0.5);
     z-index: 9999;
     justify-content: center;
     align-items: center;
@@ -612,17 +618,17 @@ b {
 }
 
 .lightbox img {
-    max-width: 90%;
-    max-height: 90%;
+    max-width: 60%;
+    max-height: 60%;
     object-fit: contain;
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
 }
 
 .lightbox-close {
     position: absolute;
     top: 30px;
     right: 40px;
-    color: white;
+    color: var(--primary-black);
     font-size: 3rem;
     font-weight: 300;
     cursor: pointer;
@@ -631,11 +637,43 @@ b {
     border: none;
     padding: 0;
     line-height: 1;
+    z-index: 10001;
 }
 
 .lightbox-close:hover {
     color: #e87605;
     transform: scale(1.1);
+}
+
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    color: var(--primary-black);
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+}
+
+.lightbox-nav:hover {
+    background: rgba(255, 255, 255, 1);
+    color: #e87605;
+}
+
+.lightbox-nav-prev {
+    left: 40px;
+}
+
+.lightbox-nav-next {
+    right: 40px;
 }
 
 /* Contact Section */
