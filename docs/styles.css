@@ -358,7 +358,7 @@ b {
 /* Specific divider sizes and positions */
 .section-divider-decoration.mak1 {
     height: 160px;
-    top: 50%;
+    top: 100px;
     transform: translateY(-50%);
 }
 
