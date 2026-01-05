@@ -266,7 +266,7 @@ b {
 
 .hero-logo-vinok {
     position: absolute;
-    width: 100%;
+    width: 300px;
     height: auto;
     top: 50%;
     left: 50%;
@@ -274,7 +274,6 @@ b {
     z-index: 1;
     filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
     animation: rotate 40s linear infinite;
-    max-width: 100%;
 }
 
 @keyframes rotate {
@@ -336,6 +335,35 @@ b {
 .section {
     padding: 100px 0;
     position: relative;
+}
+
+/* Section Divider */
+.section-divider {
+    position: relative;
+    height: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.section-divider-decoration {
+    position: absolute;
+    height: 80px;
+    width: auto;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Specific divider sizes and positions */
+.section-divider-decoration.mak1 {
+    height: 160px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.section-divider-decoration.mak3 {
+    height: 120px;
 }
 
 .section-title {
@@ -405,6 +433,7 @@ b {
 /* About Section */
 .about {
     background: var(--bg-white);
+    padding-top: 200px;
 }
 
 .about-content {
@@ -740,6 +769,23 @@ b {
 /* Contact Section */
 .contact {
     background: var(--bg-lighter);
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-decoration {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 60%;
+    width: auto;
+    z-index: 0;
+    opacity: 0.9;
+}
+
+.contact .container {
+    position: relative;
+    z-index: 1;
 }
 
 .contact-content {
