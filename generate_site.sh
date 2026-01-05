@@ -33,12 +33,20 @@
 GALLERY_DIR="gallery"
 IMAGES_DIR="images"
 DOCS_IMAGES_DIR="docs/images"
+DOCS_GALLERY_DIR="docs/gallery"
 THUMBNAILS_DIR="docs/thumbnails"
 INDEX_TEMPLATE="templates/index-template.html"
 GALLERY_TEMPLATE="templates/gallery-template.html"
 LIGHTBOX_TEMPLATE="templates/lightbox-template.html"
 INDEX_OUTPUT="docs/index.html"
 GALLERY_OUTPUT="docs/gallery.html"
+
+# Function to normalize filename: lowercase and replace spaces with underscores
+normalize_filename() {
+    local filename="$1"
+    # Convert to lowercase and replace spaces with underscores
+    echo "$filename" | tr '[:upper:]' '[:lower:]' | tr ' ' '_'
+}
 
 echo "========================================="
 echo "  Gallery Generator with Optimization"
@@ -70,35 +78,41 @@ fi
 # Create necessary directories
 mkdir -p "$THUMBNAILS_DIR"
 mkdir -p "$DOCS_IMAGES_DIR"
+mkdir -p "$DOCS_GALLERY_DIR"
 
 echo "Step 1: Copying static images from images/ to docs/images/..."
 echo "--------------------------------------------"
 
-# Copy all images from images/ to docs/images/ (excluding README)
+# Copy all images from images/ to docs/images/ with normalized filenames
 if [ -d "$IMAGES_DIR" ]; then
     copied=0
     find "$IMAGES_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.svg" \) | while read -r img; do
         filename=$(basename "$img")
-        cp "$img" "$DOCS_IMAGES_DIR/$filename"
+        normalized_filename=$(normalize_filename "$filename")
+        cp "$img" "$DOCS_IMAGES_DIR/$normalized_filename"
         echo $((copied + 1)) > /tmp/copied_count.txt
     done
 
     copied=$(cat /tmp/copied_count.txt 2>/dev/null || echo 0)
     rm -f /tmp/copied_count.txt
 
-    echo "  ✓ Copied $copied static images"
+    echo "  ✓ Copied $copied static images (normalized to lowercase)"
 else
     echo "  ⚠ Warning: images/ directory not found"
 fi
 echo ""
 
-echo "Step 2: Optimizing source images in gallery/ to 1080px..."
+echo "Step 2: Optimizing gallery images to 1080px and copying to docs/gallery/..."
 echo "--------------------------------------------"
 
 optimized_count=0
-skipped_count=0
+copied_count=0
 
 find "$GALLERY_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | while read -r img; do
+    filename=$(basename "$img")
+    normalized_filename=$(normalize_filename "$filename")
+    dest_path="$DOCS_GALLERY_DIR/$normalized_filename"
+
     # Get dimensions
     width=$(sips -g pixelWidth "$img" 2>/dev/null | tail -1 | awk '{print $2}')
     height=$(sips -g pixelHeight "$img" 2>/dev/null | tail -1 | awk '{print $2}')
@@ -108,23 +122,24 @@ find "$GALLERY_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.pn
         continue
     fi
 
-    # Resize source to 1080px if larger (for lightbox)
+    # Resize to 1080px and copy to docs/gallery with normalized name
     if [ "$width" -gt 1080 ] || [ "$height" -gt 1080 ]; then
-        filename=$(basename "$img")
-        echo "  Resizing $filename to 1080px..."
-        sips --resampleHeightWidthMax 1080 "$img" --out "$img" > /dev/null 2>&1
+        echo "  Optimizing $filename -> $normalized_filename (1080px)..."
+        sips --resampleHeightWidthMax 1080 "$img" --out "$dest_path" > /dev/null 2>&1
         echo $((optimized_count + 1)) > /tmp/optimized_count.txt
     else
-        echo $((skipped_count + 1)) > /tmp/skipped_count.txt
+        # Just copy with normalized name
+        cp "$img" "$dest_path"
+        echo $((copied_count + 1)) > /tmp/copied_count.txt
     fi
 done
 
 optimized_count=$(cat /tmp/optimized_count.txt 2>/dev/null || echo 0)
-skipped_count=$(cat /tmp/skipped_count.txt 2>/dev/null || echo 0)
-rm -f /tmp/optimized_count.txt /tmp/skipped_count.txt
+copied_count=$(cat /tmp/copied_count.txt 2>/dev/null || echo 0)
+rm -f /tmp/optimized_count.txt /tmp/copied_count.txt
 
-echo "  ✓ Optimized: $optimized_count images"
-echo "  ✓ Already optimal: $skipped_count images"
+echo "  ✓ Optimized and copied: $optimized_count images"
+echo "  ✓ Copied as-is: $copied_count images"
 echo ""
 
 echo "Step 3: Creating 720px thumbnails..."
@@ -134,9 +149,10 @@ thumbnail_count=0
 
 find "$GALLERY_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | while read -r img; do
     filename=$(basename "$img")
-    thumbnail_path="$THUMBNAILS_DIR/$filename"
+    normalized_filename=$(normalize_filename "$filename")
+    thumbnail_path="$THUMBNAILS_DIR/$normalized_filename"
 
-    # Create thumbnail (720px max)
+    # Create thumbnail (720px max) with normalized filename
     sips --resampleHeightWidthMax 720 "$img" --out "$thumbnail_path" > /dev/null 2>&1
 
     if [ $? -eq 0 ]; then
@@ -147,7 +163,7 @@ done
 thumbnail_count=$(wc -l < /tmp/thumbnail_count.txt 2>/dev/null || echo 0)
 rm -f /tmp/thumbnail_count.txt
 
-echo "  ✓ Created $thumbnail_count thumbnails"
+echo "  ✓ Created $thumbnail_count thumbnails (normalized to lowercase)"
 echo ""
 
 echo "Step 4: Generating HTML pages..."
@@ -161,13 +177,14 @@ count=0
 find "$GALLERY_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | sort -R | while read -r img; do
     # Get filename without path
     filename=$(basename "$img")
+    normalized_filename=$(normalize_filename "$filename")
 
     # Generate alt text from filename (remove extension and replace special chars)
-    alt_text=$(echo "$filename" | sed 's/\.[^.]*$//' | sed 's/[-_]/ /g')
+    alt_text=$(echo "$normalized_filename" | sed 's/\.[^.]*$//' | sed 's/[-_]/ /g')
 
-    # Paths for thumbnail and full-size (relative to docs/ root)
-    thumbnail_src="thumbnails/$filename"
-    fullsize_src="../$img"
+    # Paths for thumbnail and full-size (relative to docs/ root) - using normalized names
+    thumbnail_src="thumbnails/$normalized_filename"
+    fullsize_src="gallery/$normalized_filename"
 
     # Generate carousel item (for index.html) - thumbnail with data-fullsize attribute
     echo "                        <div class=\"gallery-item\" data-fullsize=\"$fullsize_src\">"
