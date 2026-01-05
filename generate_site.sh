@@ -1,11 +1,38 @@
 #!/bin/bash
 
-# Unified gallery generator with automatic image optimization
-# - Resizes source images in gallery/ to 1080px (full-size for lightbox)
-# - Creates 720px thumbnails for carousel/grid display
-# - Generates both index.html and gallery.html
+# ==============================================================================
+# Site Generation Script for Zoloti Maky Dance Ensemble Website
+# ==============================================================================
+#
+# This script automates the build process for the Zoloti Maky website:
+#
+# 1. Copies static images from images/ to docs/images/
+# 2. Optimizes gallery images in gallery/ to 1080px (for lightbox display)
+# 3. Creates 720px thumbnails in docs/thumbnails/ (for carousel/grid)
+# 4. Generates HTML pages from templates (index.html and gallery.html)
+# 5. Randomizes gallery image order on each build
+#
+# Directory Structure:
+#   gallery/           - Source gallery images (any resolution)
+#   images/            - Static site images (logos, decorations)
+#   templates/         - HTML templates with placeholders
+#   docs/              - Generated site (ready for deployment)
+#   docs/gallery/      - Optimized gallery images (1080px)
+#   docs/thumbnails/   - Gallery thumbnails (720px)
+#   docs/images/       - Copied static images
+#
+# Usage:
+#   ./generate_site.sh
+#
+# Requirements:
+#   - macOS with sips command for image processing
+#   - Bash shell
+#
+# ==============================================================================
 
 GALLERY_DIR="gallery"
+IMAGES_DIR="images"
+DOCS_IMAGES_DIR="docs/images"
 THUMBNAILS_DIR="docs/thumbnails"
 INDEX_TEMPLATE="templates/index-template.html"
 GALLERY_TEMPLATE="templates/gallery-template.html"
@@ -40,10 +67,32 @@ if [ ! -f "$LIGHTBOX_TEMPLATE" ]; then
     exit 1
 fi
 
-# Create thumbnails directory if it doesn't exist
+# Create necessary directories
 mkdir -p "$THUMBNAILS_DIR"
+mkdir -p "$DOCS_IMAGES_DIR"
 
-echo "Step 1: Optimizing source images in gallery/ to 1080px..."
+echo "Step 1: Copying static images from images/ to docs/images/..."
+echo "--------------------------------------------"
+
+# Copy all images from images/ to docs/images/ (excluding README)
+if [ -d "$IMAGES_DIR" ]; then
+    copied=0
+    find "$IMAGES_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.svg" \) | while read -r img; do
+        filename=$(basename "$img")
+        cp "$img" "$DOCS_IMAGES_DIR/$filename"
+        echo $((copied + 1)) > /tmp/copied_count.txt
+    done
+
+    copied=$(cat /tmp/copied_count.txt 2>/dev/null || echo 0)
+    rm -f /tmp/copied_count.txt
+
+    echo "  ✓ Copied $copied static images"
+else
+    echo "  ⚠ Warning: images/ directory not found"
+fi
+echo ""
+
+echo "Step 2: Optimizing source images in gallery/ to 1080px..."
 echo "--------------------------------------------"
 
 optimized_count=0
@@ -78,7 +127,7 @@ echo "  ✓ Optimized: $optimized_count images"
 echo "  ✓ Already optimal: $skipped_count images"
 echo ""
 
-echo "Step 2: Creating 720px thumbnails..."
+echo "Step 3: Creating 720px thumbnails..."
 echo "--------------------------------------------"
 
 thumbnail_count=0
@@ -101,7 +150,7 @@ rm -f /tmp/thumbnail_count.txt
 echo "  ✓ Created $thumbnail_count thumbnails"
 echo ""
 
-echo "Step 3: Generating HTML pages..."
+echo "Step 4: Generating HTML pages..."
 echo "--------------------------------------------"
 
 # Counter for images

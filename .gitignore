@@ -1,5 +1,42 @@
+# Mac OS
 .DS_Store
-CLAUDE.MD
-GALLERY_README.md
-TYPOGRAPHY.md
-README.md
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Editor files
+*~
+.*.swp
+.*.swo
+*~
+*.bak
+
+# IDE
+.vscode/
+.idea/
+
+# Documentation (keep in llms/ directory instead)
+/CLAUDE.MD
+/GALLERY_README.md
+/TYPOGRAPHY.md
+/README.md

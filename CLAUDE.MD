@@ -23,17 +23,45 @@ Claude will make technical decisions based on:
 - Ease of content updates
 - Hosting simplicity for non-technical owner
 
-## Project structure
-- gallery - original gallery images. For each file there
-  - Convert to jpeg 1080p and place into docs/gallery for distribution
-  - Convert to 480p and place into docs/thumbnails
-  - Image file names must be lowercase with no spaces or special characters (replace spaces with _).
-- templates - html pages templates
-- llms - additional context files in markdown format. Save new md files there
-- images - page images. For each file there:
-  - Copy to docs/images
-  - Make sure to convert names to lower case, remove special characters and replace spaces with _
-- generate_site.sh - site generation script that takes templates and produces a ready for distribution site. That includes gallery images conversion, images copying etc. Writes the result to docs directory.
+## Project Structure
+
+### Source Directories
+- **gallery/** - Original gallery images (high resolution photos)
+  - Images are automatically resized to 1080px max for lightbox display
+  - Thumbnails (720px) are generated for carousel/grid display
+  - File names should use lowercase with underscores instead of spaces
+
+- **templates/** - HTML page templates
+  - `index-template.html` - Main landing page template
+  - `gallery-template.html` - Full gallery page template
+  - `lightbox-template.html` - Reusable lightbox component
+  - Templates use placeholders (e.g., `<!-- GALLERY_CAROUSEL_ITEMS_PLACEHOLDER -->`)
+
+- **images/** - Static page images (logos, decorative elements, section images)
+  - Copied directly to `docs/images/` during site generation
+  - Use lowercase names with underscores instead of spaces
+
+- **llms/** - Documentation and context files in markdown format
+  - Technical documentation for AI assistants
+  - Design guidelines, typography specs, gallery instructions
+
+### Generated Directory (Distribution)
+- **docs/** - Generated site ready for deployment (GitHub Pages compatible)
+  - `docs/index.html` - Generated main page
+  - `docs/gallery.html` - Generated full gallery page
+  - `docs/styles.css` - Site stylesheet
+  - `docs/script.js` - Site JavaScript
+  - `docs/images/` - Static images copied from `images/`
+  - `docs/gallery/` - Optimized gallery images (1080px max)
+  - `docs/thumbnails/` - Gallery thumbnails (720px max)
+
+### Build System
+- **generate_site.sh** - Automated site generation script
+  - Optimizes source images in `gallery/` to 1080px (for lightbox)
+  - Creates 720px thumbnails in `docs/thumbnails/` (for carousel/grid)
+  - Injects gallery items into templates using placeholders
+  - Generates both `index.html` and `gallery.html`
+  - Randomizes image order on each run
 
 ## Key Features
 1. **About the Group** - Introduction and background of Zoloti Maky
@@ -67,8 +95,37 @@ Claude will make technical decisions based on:
 - Ensure mobile compatibility
 - Consider performance (fast loading times)
 
+## Technical Implementation
+
+### Image Optimization
+- **Gallery Images**: Resized to 1080px max (maintains aspect ratio)
+- **Thumbnails**: Resized to 720px max (maintains aspect ratio)
+- **Tool**: macOS `sips` command for image processing
+- **Format**: Preserves original format (JPG/PNG)
+
+### Gallery System
+- Automated generation from source images
+- Randomized display order on each build
+- Two display modes:
+  - Carousel on main page (horizontal scrolling)
+  - Grid on gallery page (responsive grid layout)
+- Lightbox with keyboard navigation
+
+### Styling & Design
+- Color scheme: Orange (#e87605) with Ukrainian blue/red accents
+- Typography: Aptos font family
+- Responsive design (mobile-first approach)
+- Decorative poppy images as section dividers
+
 ## Current Status
-Project initialized. Next steps:
-1. Discuss design preferences and content
-2. Choose appropriate technology stack
-3. Begin development
+Site is fully functional with:
+- ✓ Responsive navigation
+- ✓ Hero section with animated logo
+- ✓ About section with team info
+- ✓ Dance packages (3 service offerings)
+- ✓ Automated gallery with lightbox
+- ✓ Contact form with social media links
+- ✓ Photo credits section
+- ✓ Decorative section dividers
+
+Deployment: Ready for GitHub Pages (docs/ folder)
