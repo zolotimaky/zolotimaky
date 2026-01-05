@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Photo gallery of Zoloti Maky Ukrainian Dance Ensemble performances, events, and cultural celebrations.">
+    <title>Gallery - Zoloti Maky Ukrainian Dance Ensemble</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Gallery-specific styles */
+        .gallery-page {
+            padding-top: 90px;
+            min-height: 100vh;
+        }
+
+        .gallery-page .section-title {
+            margin-bottom: 2rem;
+        }
+
+        .gallery-page .gallery-grid-full {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .gallery-page .gallery-item {
+            cursor: pointer;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-page .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .gallery-page .gallery-item img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-page .gallery-grid-full {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+
+            .gallery-page .gallery-item img {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">Zoloti Maky</div>
+            <ul class="nav-menu">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Gallery Page -->
+    <section class="gallery-page section">
+        <div class="container">
+            <h2 class="section-title">Photo Gallery</h2>
+            <p style="text-align: center; margin-bottom: 3rem; color: var(--text-gray);">
+                Browse our collection of performances, events, and celebrations
+            </p>
+
+            <div class="gallery-grid-full">
+                <!-- GALLERY_ITEMS_PLACEHOLDER -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Zoloti Maky. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">&times;</button>
+        <img src="" alt="Zoomed image" id="lightboxImage">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
