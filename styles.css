@@ -366,6 +366,17 @@ b {
     order: 1;
 }
 
+/* Specific decoration styles */
+.about .section-title-decoration-right {
+    height: 180px;
+    transform: translateY(-20%);
+}
+
+.gallery .section-title-decoration-right {
+    height: 120px;
+    transform: translateY(-20%) rotate(180deg);
+}
+
 .section-title::after {
     display: none;
 }
