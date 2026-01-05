@@ -33,33 +33,34 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 const contactForm = document.getElementById('contactForm');
 const formMessage = document.getElementById('formMessage');
 
-contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+if (contactForm && formMessage) {
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    // Get form data
-    const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        inquiryType: document.getElementById('inquiry-type').value,
-        message: document.getElementById('message').value
-    };
+        // Get form data
+        const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            inquiryType: document.getElementById('inquiry-type').value,
+            message: document.getElementById('message').value
+        };
 
-    // For now, just show a success message
-    // In production, this would connect to a form service like Formspree or Web3Forms
-    console.log('Form submitted:', formData);
+        // For now, just show a success message
+        // In production, this would connect to a form service like Formspree or Web3Forms
+        console.log('Form submitted:', formData);
 
-    // Show success message
-    formMessage.textContent = 'Thank you for your message! We\'ll get back to you soon.';
-    formMessage.className = 'form-message success';
+        // Show success message
+        formMessage.textContent = 'Thank you for your message! We\'ll get back to you soon.';
+        formMessage.className = 'form-message success';
 
-    // Reset form
-    contactForm.reset();
+        // Reset form
+        contactForm.reset();
 
-    // Hide message after 5 seconds
-    setTimeout(() => {
-        formMessage.className = 'form-message';
-    }, 5000);
+        // Hide message after 5 seconds
+        setTimeout(() => {
+            formMessage.className = 'form-message';
+        }, 5000);
 
     /*
     // Example of how to integrate with Formspree (when ready):
@@ -84,7 +85,8 @@ contactForm.addEventListener('submit', async (e) => {
         formMessage.className = 'form-message error';
     }
     */
-});
+    });
+}
 
 // Add navbar background on scroll
 window.addEventListener('scroll', () => {
@@ -112,6 +114,7 @@ function getItemsPerView() {
 }
 
 function updateCarousel() {
+    if (!galleryTrack) return;
     const itemsPerView = getItemsPerView();
     const slideWidth = 100 / itemsPerView;
     const offset = -currentSlide * slideWidth;
@@ -140,13 +143,13 @@ function prevSlide() {
     updateCarousel();
 }
 
-if (nextButton && prevButton) {
+if (nextButton && prevButton && galleryTrack) {
     nextButton.addEventListener('click', nextSlide);
     prevButton.addEventListener('click', prevSlide);
-}
 
-// Update carousel on window resize
-window.addEventListener('resize', updateCarousel);
+    // Update carousel on window resize
+    window.addEventListener('resize', updateCarousel);
+}
 
 // Lightbox functionality
 const lightbox = document.getElementById('lightbox');
