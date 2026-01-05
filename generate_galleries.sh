@@ -102,7 +102,8 @@ echo "--------------------------------------------"
 count=0
 
 # Process all image files and generate both carousel and grid items
-find "$GALLERY_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | sort | while read -r img; do
+# Use sort -R to randomize order on each run
+find "$GALLERY_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | sort -R | while read -r img; do
     # Get filename without path
     filename=$(basename "$img")
 

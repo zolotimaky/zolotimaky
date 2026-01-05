@@ -577,6 +577,21 @@ b {
     cursor: pointer;
 }
 
+.view-full-gallery {
+    display: inline-block;
+    color: #e87605;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.view-full-gallery:hover {
+    border-bottom: 2px solid #e87605;
+}
+
 /* Lightbox Modal */
 .lightbox {
     display: none;
