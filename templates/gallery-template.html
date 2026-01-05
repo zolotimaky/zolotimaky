@@ -40,13 +40,14 @@
         }
 
         @media (max-width: 768px) {
-            .gallery-page .gallery-grid-full {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 1rem;
+            /* Mobile: keep same layout as desktop, remove borders */
+            .gallery-page .gallery-item {
+                box-shadow: none;
             }
 
-            .gallery-page .gallery-item img {
-                height: 250px;
+            .gallery-page .gallery-item:hover {
+                transform: none;
+                box-shadow: none;
             }
         }
     </style>
