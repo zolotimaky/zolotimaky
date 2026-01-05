@@ -96,11 +96,101 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Gallery lightbox effect (simple version)
+// Gallery Carousel
+let currentSlide = 0;
+const galleryTrack = document.querySelector('.gallery-track');
+const slides = document.querySelectorAll('.gallery-item');
+const totalSlides = slides.length;
+const prevButton = document.getElementById('prevSlide');
+const nextButton = document.getElementById('nextSlide');
+
+function getItemsPerView() {
+    const width = window.innerWidth;
+    if (width <= 768) return 2;
+    if (width <= 1024) return 3;
+    return 4;
+}
+
+function updateCarousel() {
+    const itemsPerView = getItemsPerView();
+    const slideWidth = 100 / itemsPerView;
+    const offset = -currentSlide * slideWidth;
+    galleryTrack.style.transform = `translateX(${offset}%)`;
+}
+
+function nextSlide() {
+    const itemsPerView = getItemsPerView();
+    const maxSlide = totalSlides - itemsPerView;
+    if (currentSlide < maxSlide) {
+        currentSlide++;
+    } else {
+        currentSlide = 0;
+    }
+    updateCarousel();
+}
+
+function prevSlide() {
+    const itemsPerView = getItemsPerView();
+    const maxSlide = totalSlides - itemsPerView;
+    if (currentSlide > 0) {
+        currentSlide--;
+    } else {
+        currentSlide = maxSlide;
+    }
+    updateCarousel();
+}
+
+if (nextButton && prevButton) {
+    nextButton.addEventListener('click', nextSlide);
+    prevButton.addEventListener('click', prevSlide);
+}
+
+// Update carousel on window resize
+window.addEventListener('resize', updateCarousel);
+
+// Lightbox functionality
+const lightbox = document.getElementById('lightbox');
+const lightboxImage = document.getElementById('lightboxImage');
+const lightboxClose = document.getElementById('lightboxClose');
+
+// Add click event to all gallery items
 document.querySelectorAll('.gallery-item').forEach(item => {
-    item.addEventListener('click', () => {
-        // In a full implementation, this would open a lightbox modal
-        // For now, just add a visual feedback
-        console.log('Gallery item clicked');
+    item.addEventListener('click', (e) => {
+        const imgElement = item.querySelector('img') || item.querySelector('.placeholder-image');
+        if (imgElement && imgElement.tagName === 'IMG') {
+            lightboxImage.src = imgElement.src;
+            lightboxImage.alt = imgElement.alt;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
     });
 });
+
+// Close lightbox when clicking close button
+lightboxClose.addEventListener('click', (e) => {
+    e.stopPropagation();
+    lightbox.classList.remove('active');
+    document.body.style.overflow = 'auto';
+});
+
+// Close lightbox when clicking on the background
+lightbox.addEventListener('click', () => {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = 'auto';
+});
+
+// Prevent closing when clicking on the image itself
+lightboxImage.addEventListener('click', (e) => {
+    e.stopPropagation();
+});
+
+// Close lightbox with Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// Optional: Auto-play carousel (commented out - uncomment if desired)
+// setInterval(nextSlide, 5000);
