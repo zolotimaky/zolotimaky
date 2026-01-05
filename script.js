@@ -158,7 +158,9 @@ document.querySelectorAll('.gallery-item').forEach(item => {
     item.addEventListener('click', (e) => {
         const imgElement = item.querySelector('img') || item.querySelector('.placeholder-image');
         if (imgElement && imgElement.tagName === 'IMG') {
-            lightboxImage.src = imgElement.src;
+            // Use full-size image from data-fullsize attribute, fallback to thumbnail src
+            const fullsizeSrc = item.getAttribute('data-fullsize') || imgElement.src;
+            lightboxImage.src = fullsizeSrc;
             lightboxImage.alt = imgElement.alt;
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';

@@ -26,19 +26,40 @@ Whenever you add new photos to the `gallery/` folder, simply run:
 ```
 
 This single command:
-- Scans all images in `gallery/` directory
+- **Optimizes source images** in `gallery/` to 1080px (if larger)
+- **Creates 480px thumbnails** in `thumbnails/` directory
 - Generates `index.html` with carousel containing ALL images
 - Generates `gallery.html` with grid of ALL images
 - **Keeps the same image order in both files**
 
 ### What the Script Does
 
-The unified script:
-- Scans the gallery folder once for all JPG/PNG images
-- Generates carousel items for index.html (shows 2-4 at a time)
-- Generates grid items for gallery.html (shows all at once)
-- Ensures identical image order in both galleries
-- Provides a summary of what was generated
+**Step 1: Optimize Source Images**
+- Resizes all images in `gallery/` to max 1080px
+- These are used for lightbox (full-size viewing)
+- Source images remain in `gallery/` directory
+
+**Step 2: Create Thumbnails**
+- Generates 480px thumbnails in `thumbnails/` directory
+- ~75% smaller file size for faster page loading
+- Used for carousel and grid display
+
+**Step 3: Generate HTML**
+- Creates index.html (carousel shows 2-4 thumbnails at a time)
+- Creates gallery.html (grid shows all thumbnails)
+- Click any thumbnail to view full 1080px image in lightbox
+- Identical image order in both files
+
+### Image Optimization
+
+**Two-Tier System:**
+- **Thumbnails (480px):** Fast loading, used in carousel/grid (~60-90KB each)
+- **Gallery (1080px):** High quality, used in lightbox only (~200-300KB each)
+
+**Benefits:**
+- Fast initial page load with small thumbnails
+- High quality viewing when user clicks to zoom
+- Automatic optimization of new photos
 
 ### Supported Formats
 
