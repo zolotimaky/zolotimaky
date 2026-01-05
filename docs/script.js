@@ -29,7 +29,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Contact Form Handling
+// Contact Form Handling with Web3Forms
 const contactForm = document.getElementById('contactForm');
 const formMessage = document.getElementById('formMessage');
 
@@ -38,48 +38,41 @@ if (contactForm && formMessage) {
         e.preventDefault();
 
         // Get form data
-        const formData = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            inquiryType: document.getElementById('inquiry-type').value,
-            message: document.getElementById('message').value
-        };
+        const formData = new FormData(contactForm);
 
-        // For now, just show a success message
-        // In production, this would connect to a form service like Formspree or Web3Forms
-        formMessage.textContent = 'Thank you for your message! We\'ll get back to you soon.';
-        formMessage.className = 'form-message success';
-        contactForm.reset();
+        try {
+            const response = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: formData
+            });
 
-        // Hide message after 5 seconds
-        setTimeout(() => {
-            formMessage.className = 'form-message';
-        }, 5000);
+            const data = await response.json();
 
-    /*
-    // Example of how to integrate with Formspree (when ready):
-    try {
-        const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
+            if (data.success) {
+                formMessage.textContent = 'Thank you!';
+                formMessage.className = 'form-message success';
+                formMessage.style.display = 'block';
+                contactForm.reset();
 
-        if (response.ok) {
-            formMessage.textContent = 'Thank you for your message! We\'ll get back to you soon.';
-            formMessage.className = 'form-message success';
-            contactForm.reset();
-        } else {
-            throw new Error('Form submission failed');
+                // Hide message after 5 seconds
+                setTimeout(() => {
+                    formMessage.style.display = 'none';
+                    formMessage.className = 'form-message';
+                }, 5000);
+            } else {
+                throw new Error('Form submission failed');
+            }
+        } catch (error) {
+            formMessage.textContent = 'Something went wrong. Please try again.';
+            formMessage.className = 'form-message error';
+            formMessage.style.display = 'block';
+
+            // Hide error message after 5 seconds
+            setTimeout(() => {
+                formMessage.style.display = 'none';
+                formMessage.className = 'form-message';
+            }, 5000);
         }
-    } catch (error) {
-        formMessage.textContent = 'Something went wrong. Please try again.';
-        formMessage.className = 'form-message error';
-    }
-    */
     });
 }
 

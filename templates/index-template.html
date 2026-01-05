@@ -192,7 +192,10 @@
                     </div>
                 </div>
                 <div class="contact-form-container">
-                    <form class="contact-form" id="contactForm">
+                    <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+                        <!-- Web3Forms Access Key - Replace with your own key from https://web3forms.com -->
+                        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+
                         <div class="form-group">
                             <label for="name">Name *</label>
                             <input type="text" id="name" name="name" required>
@@ -208,10 +211,10 @@
                         <div class="form-group">
                             <label for="inquiry-type">Inquiry Type</label>
                             <select id="inquiry-type" name="inquiry-type">
-                                <option value="general">General Inquiry</option>
-                                <option value="performance">Performance Booking</option>
-                                <option value="classes">Dance Classes</option>
-                                <option value="workshop">Workshop</option>
+                                <option value="large-performance">Large full-group performance</option>
+                                <option value="small-private">Small weddings & private parties</option>
+                                <option value="workshop">30-minute interactive add-on</option>
+                                <option value="other">Other questions</option>
                             </select>
                         </div>
                         <div class="form-group">
