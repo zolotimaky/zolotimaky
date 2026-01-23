@@ -166,13 +166,25 @@ function getNewsItemsPerView() {
 
 function updateNewsCarousel(smooth = true) {
     if (!newsTrack) return;
+    if (newsSlides.length === 0) return;
+
     const itemsPerView = getNewsItemsPerView();
-    const slideWidth = 100 / itemsPerView;
-    const offset = -currentNewsSlide * slideWidth;
+
+    // Calculate actual pixel width of one slide including gap
+    const firstSlide = newsSlides[0];
+    const slideWidth = firstSlide.offsetWidth;
+
+    // Get gap from computed style
+    const trackStyle = window.getComputedStyle(newsTrack);
+    const gap = parseFloat(trackStyle.gap) || 0;
+
+    // Total distance to move per slide (width + gap)
+    const slideDistance = slideWidth + gap;
+    const offset = -currentNewsSlide * slideDistance;
 
     // Enable or disable transition
     newsTrack.style.transition = smooth ? 'transform 0.4s ease' : 'none';
-    newsTrack.style.transform = `translateX(${offset}%)`;
+    newsTrack.style.transform = `translateX(${offset}px)`;
 }
 
 function nextNewsSlide() {
@@ -180,12 +192,11 @@ function nextNewsSlide() {
     updateNewsCarousel(true);
 
     // Reset to beginning when we've gone through all original slides
-    // Use modulo to create seamless loop
     if (currentNewsSlide >= totalNewsSlides) {
         setTimeout(() => {
             newsTrack.style.transition = 'none';
             currentNewsSlide = 0;
-            newsTrack.style.transform = `translateX(0%)`;
+            newsTrack.style.transform = `translateX(0px)`;
 
             // Force reflow to ensure the style change takes effect
             void newsTrack.offsetWidth;
@@ -198,9 +209,16 @@ function prevNewsSlide() {
         // Jump to the end position without animation
         newsTrack.style.transition = 'none';
         currentNewsSlide = totalNewsSlides;
-        const itemsPerView = getNewsItemsPerView();
-        const slideWidth = 100 / itemsPerView;
-        newsTrack.style.transform = `translateX(-${currentNewsSlide * slideWidth}%)`;
+
+        // Calculate the exact position
+        const firstSlide = newsSlides[0];
+        const slideWidth = firstSlide.offsetWidth;
+        const trackStyle = window.getComputedStyle(newsTrack);
+        const gap = parseFloat(trackStyle.gap) || 0;
+        const slideDistance = slideWidth + gap;
+        const offset = -currentNewsSlide * slideDistance;
+
+        newsTrack.style.transform = `translateX(${offset}px)`;
 
         // Force reflow
         void newsTrack.offsetWidth;
