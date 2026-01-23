@@ -144,7 +144,7 @@ if (nextButton && prevButton && galleryTrack) {
     updateCarousel();
 }
 
-// News Carousel
+// News Carousel - Infinite Loop
 let currentNewsSlide = 0;
 const newsTrack = document.querySelector('.news-track');
 const newsSlides = document.querySelectorAll('.news-item');
@@ -152,40 +152,60 @@ const totalNewsSlides = newsSlides.length;
 const prevNewsButton = document.getElementById('prevNewsSlide');
 const nextNewsButton = document.getElementById('nextNewsSlide');
 
+// Clone news items for infinite loop effect
+if (newsTrack && newsSlides.length > 0) {
+    const clonedSlides = Array.from(newsSlides).map(slide => slide.cloneNode(true));
+    clonedSlides.forEach(clone => newsTrack.appendChild(clone));
+}
+
 function getNewsItemsPerView() {
     const width = window.innerWidth;
     if (width <= 768) return 1;  // Mobile: 1 item at a time
     return 3;  // Desktop: 3 items at a time
 }
 
-function updateNewsCarousel() {
+function updateNewsCarousel(smooth = true) {
     if (!newsTrack) return;
     const itemsPerView = getNewsItemsPerView();
     const slideWidth = 100 / itemsPerView;
     const offset = -currentNewsSlide * slideWidth;
+
+    // Enable or disable transition
+    newsTrack.style.transition = smooth ? 'transform 0.4s ease' : 'none';
     newsTrack.style.transform = `translateX(${offset}%)`;
 }
 
 function nextNewsSlide() {
     const itemsPerView = getNewsItemsPerView();
-    const maxSlide = totalNewsSlides - itemsPerView;
-    if (currentNewsSlide < maxSlide) {
-        currentNewsSlide++;
-    } else {
-        currentNewsSlide = 0;
+    currentNewsSlide++;
+    updateNewsCarousel(true);
+
+    // If we've moved past the original slides, reset to the beginning
+    if (currentNewsSlide >= totalNewsSlides) {
+        setTimeout(() => {
+            currentNewsSlide = 0;
+            updateNewsCarousel(false);
+        }, 400); // Wait for transition to complete
     }
-    updateNewsCarousel();
 }
 
 function prevNewsSlide() {
     const itemsPerView = getNewsItemsPerView();
-    const maxSlide = totalNewsSlides - itemsPerView;
-    if (currentNewsSlide > 0) {
-        currentNewsSlide--;
+
+    if (currentNewsSlide === 0) {
+        // Jump to the end of cloned slides without animation
+        currentNewsSlide = totalNewsSlides;
+        updateNewsCarousel(false);
+
+        // Then animate to the previous slide
+        setTimeout(() => {
+            currentNewsSlide--;
+            updateNewsCarousel(true);
+        }, 20);
     } else {
-        currentNewsSlide = maxSlide;
+        currentNewsSlide--;
+        updateNewsCarousel(true);
     }
-    updateNewsCarousel();
 }
 
 if (nextNewsButton && prevNewsButton && newsTrack) {
