@@ -172,27 +172,48 @@ echo "--------------------------------------------"
 # Counter for images
 count=0
 
+# Priority image to always show first
+PRIORITY_IMAGE="b945deee-593c-40d2-a20f-ab79aa32796c.jpg"
+
 # Process all image files and generate both carousel and grid items
-# Use sort -R to randomize order on each run
-find "$GALLERY_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | sort -R | while read -r img; do
-    # Get filename without path
-    filename=$(basename "$img")
-    normalized_filename=$(normalize_filename "$filename")
+# First output priority image, then randomize the rest
+{
+    # First, output the priority image if it exists
+    priority_path="$GALLERY_DIR/$PRIORITY_IMAGE"
+    if [ -f "$priority_path" ]; then
+        filename=$(basename "$priority_path")
+        normalized_filename=$(normalize_filename "$filename")
+        alt_text=$(echo "$normalized_filename" | sed 's/\.[^.]*$//' | sed 's/[-_]/ /g')
+        thumbnail_src="thumbnails/$normalized_filename"
+        fullsize_src="gallery/$normalized_filename"
 
-    # Generate alt text from filename (remove extension and replace special chars)
-    alt_text=$(echo "$normalized_filename" | sed 's/\.[^.]*$//' | sed 's/[-_]/ /g')
+        echo "                        <div class=\"gallery-item\" data-fullsize=\"$fullsize_src\">"
+        echo "                            <img src=\"$thumbnail_src\" alt=\"Zoloti Maky - $alt_text\">"
+        echo "                        </div>"
+        ((count++))
+    fi
 
-    # Paths for thumbnail and full-size (relative to docs/ root) - using normalized names
-    thumbnail_src="thumbnails/$normalized_filename"
-    fullsize_src="gallery/$normalized_filename"
+    # Then output all other images in random order
+    find "$GALLERY_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | while read -r img; do
+        filename=$(basename "$img")
 
-    # Generate carousel item (for index.html) - thumbnail with data-fullsize attribute
-    echo "                        <div class=\"gallery-item\" data-fullsize=\"$fullsize_src\">"
-    echo "                            <img src=\"$thumbnail_src\" alt=\"Zoloti Maky - $alt_text\">"
-    echo "                        </div>"
+        # Skip the priority image since we already added it
+        if [ "$filename" = "$PRIORITY_IMAGE" ]; then
+            continue
+        fi
 
-    ((count++))
-done > /tmp/gallery_carousel_items.txt
+        normalized_filename=$(normalize_filename "$filename")
+        alt_text=$(echo "$normalized_filename" | sed 's/\.[^.]*$//' | sed 's/[-_]/ /g')
+        thumbnail_src="thumbnails/$normalized_filename"
+        fullsize_src="gallery/$normalized_filename"
+
+        echo "                        <div class=\"gallery-item\" data-fullsize=\"$fullsize_src\">"
+        echo "                            <img src=\"$thumbnail_src\" alt=\"Zoloti Maky - $alt_text\">"
+        echo "                        </div>"
+
+        ((count++))
+    done | sort -R
+} > /tmp/gallery_carousel_items.txt
 
 # Copy for grid layout with adjusted indentation
 sed 's/^                        /                /' /tmp/gallery_carousel_items.txt > /tmp/gallery_grid_items.txt
