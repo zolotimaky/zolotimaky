@@ -144,6 +144,63 @@ if (nextButton && prevButton && galleryTrack) {
     updateCarousel();
 }
 
+// News Carousel
+let currentNewsSlide = 0;
+const newsTrack = document.querySelector('.news-track');
+const newsSlides = document.querySelectorAll('.news-item');
+const totalNewsSlides = newsSlides.length;
+const prevNewsButton = document.getElementById('prevNewsSlide');
+const nextNewsButton = document.getElementById('nextNewsSlide');
+
+function getNewsItemsPerView() {
+    const width = window.innerWidth;
+    if (width <= 768) return 1;  // Mobile: 1 item at a time
+    return 3;  // Desktop: 3 items at a time
+}
+
+function updateNewsCarousel() {
+    if (!newsTrack) return;
+    const itemsPerView = getNewsItemsPerView();
+    const slideWidth = 100 / itemsPerView;
+    const offset = -currentNewsSlide * slideWidth;
+    newsTrack.style.transform = `translateX(${offset}%)`;
+}
+
+function nextNewsSlide() {
+    const itemsPerView = getNewsItemsPerView();
+    const maxSlide = totalNewsSlides - itemsPerView;
+    if (currentNewsSlide < maxSlide) {
+        currentNewsSlide++;
+    } else {
+        currentNewsSlide = 0;
+    }
+    updateNewsCarousel();
+}
+
+function prevNewsSlide() {
+    const itemsPerView = getNewsItemsPerView();
+    const maxSlide = totalNewsSlides - itemsPerView;
+    if (currentNewsSlide > 0) {
+        currentNewsSlide--;
+    } else {
+        currentNewsSlide = maxSlide;
+    }
+    updateNewsCarousel();
+}
+
+if (nextNewsButton && prevNewsButton && newsTrack) {
+    nextNewsButton.addEventListener('click', nextNewsSlide);
+    prevNewsButton.addEventListener('click', prevNewsSlide);
+
+    // Update carousel on window resize
+    window.addEventListener('resize', () => {
+        updateNewsCarousel();
+    });
+
+    // Initialize
+    updateNewsCarousel();
+}
+
 // Lightbox functionality
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightboxImage');
