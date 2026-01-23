@@ -1184,6 +1184,11 @@ b {
         line-height: 1.5;
     }
 
+    /* Add extra space after photo credits to lower background flower */
+    .contact-info .contact-item:last-child {
+        margin-bottom: 3rem;
+    }
+
     .contact-item {
         margin-bottom: 0.9rem;
     }
