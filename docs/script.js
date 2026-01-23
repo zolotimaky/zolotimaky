@@ -49,7 +49,7 @@ if (contactForm && formMessage) {
             const data = await response.json();
 
             if (data.success) {
-                formMessage.textContent = 'Thank you!';
+                formMessage.textContent = 'Thanks for reaching out!';
                 formMessage.className = 'form-message success';
                 formMessage.style.display = 'block';
                 contactForm.reset();

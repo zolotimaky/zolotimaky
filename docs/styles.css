@@ -849,7 +849,7 @@ b {
 .social-links {
     display: flex;
     gap: 1rem;
-    margin-top: 2.5rem;
+    margin-bottom: 2rem;
     justify-content: flex-start;
 }
 
@@ -902,6 +902,7 @@ b {
     background: var(--bg-white);
     border: 1px solid #e0e0e0;
     color: rgba(0, 0, 0, 0.8);
+    font-family: 'Aptos', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     font-size: 0.9rem;
     font-weight: 400;
     transition: all 0.3s ease;
