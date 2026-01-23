@@ -1155,10 +1155,23 @@ b {
         font-size: 1rem;
     }
 
-    .about-content,
-    .contact-content {
+    .about-content {
         grid-template-columns: 1fr;
         gap: 2.5rem;
+    }
+
+    .contact-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+    }
+
+    .contact-info {
+        order: 2;
+    }
+
+    .contact-form-container {
+        order: 1;
     }
 
     .services-grid {
