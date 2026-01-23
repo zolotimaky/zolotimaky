@@ -132,6 +132,21 @@ function prevSlide() {
 }
 
 if (nextButton && prevButton && galleryTrack) {
+    // On mobile only: move specific image to first position
+    if (window.innerWidth <= 768 && galleryTrack) {
+        const priorityImageName = 'b566bb7e-6d1a-4719-8d0f-6617d0ea8a02.jpg';
+        const allItems = Array.from(galleryTrack.querySelectorAll('.gallery-item'));
+        const priorityItem = allItems.find(item => {
+            const fullsizePath = item.getAttribute('data-fullsize');
+            return fullsizePath && fullsizePath.includes(priorityImageName);
+        });
+
+        if (priorityItem) {
+            // Move priority item to the beginning
+            galleryTrack.insertBefore(priorityItem, galleryTrack.firstChild);
+        }
+    }
+
     nextButton.addEventListener('click', nextSlide);
     prevButton.addEventListener('click', prevSlide);
 
