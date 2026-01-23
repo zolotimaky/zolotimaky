@@ -176,26 +176,34 @@ function updateNewsCarousel(smooth = true) {
 }
 
 function nextNewsSlide() {
-    const itemsPerView = getNewsItemsPerView();
     currentNewsSlide++;
     updateNewsCarousel(true);
 
-    // If we've moved past the original slides, reset to the beginning
+    // Reset to beginning when we've gone through all original slides
+    // Use modulo to create seamless loop
     if (currentNewsSlide >= totalNewsSlides) {
         setTimeout(() => {
+            newsTrack.style.transition = 'none';
             currentNewsSlide = 0;
-            updateNewsCarousel(false);
-        }, 400); // Wait for transition to complete
+            newsTrack.style.transform = `translateX(0%)`;
+
+            // Force reflow to ensure the style change takes effect
+            void newsTrack.offsetWidth;
+        }, 450); // Wait for transition to complete
     }
 }
 
 function prevNewsSlide() {
-    const itemsPerView = getNewsItemsPerView();
-
     if (currentNewsSlide === 0) {
-        // Jump to the end of cloned slides without animation
+        // Jump to the end position without animation
+        newsTrack.style.transition = 'none';
         currentNewsSlide = totalNewsSlides;
-        updateNewsCarousel(false);
+        const itemsPerView = getNewsItemsPerView();
+        const slideWidth = 100 / itemsPerView;
+        newsTrack.style.transform = `translateX(-${currentNewsSlide * slideWidth}%)`;
+
+        // Force reflow
+        void newsTrack.offsetWidth;
 
         // Then animate to the previous slide
         setTimeout(() => {
@@ -213,8 +221,17 @@ if (nextNewsButton && prevNewsButton && newsTrack) {
     prevNewsButton.addEventListener('click', prevNewsSlide);
 
     // Update carousel on window resize
+    let resizeTimeout;
     window.addEventListener('resize', () => {
-        updateNewsCarousel();
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            // Reset to a valid position after resize
+            const itemsPerView = getNewsItemsPerView();
+            if (currentNewsSlide >= totalNewsSlides) {
+                currentNewsSlide = 0;
+            }
+            updateNewsCarousel(false);
+        }, 100);
     });
 
     // Initialize
