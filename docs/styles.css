@@ -581,7 +581,7 @@ b {
 }
 
 .service-card p {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     line-height: 1.7;
     margin-bottom: 1.5rem;
 }
@@ -1174,6 +1174,11 @@ b {
         order: 1;
     }
 
+    .contact-info .contact-item p {
+        font-size: 1.0rem;
+        line-height: 1.35;
+    }
+
     .services-grid {
         grid-template-columns: 1fr;
     }
@@ -1213,6 +1218,10 @@ b {
     /* Mobile: News section - 1 item at a time */
     .news-slider {
         margin: 0;
+    }
+
+    .news-track {
+        gap: 0;
     }
 
     .news-item {
