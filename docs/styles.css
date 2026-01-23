@@ -1179,12 +1179,17 @@ b {
         line-height: 1.12;
     }
 
+    /* Photo credits block needs more line spacing */
+    .contact-info .contact-item:last-child p {
+        line-height: 1.5;
+    }
+
     .contact-item {
-        margin-bottom: 0.67rem;
+        margin-bottom: 0.45rem;
     }
 
     .social-links {
-        margin-bottom: 0.67rem;
+        margin-bottom: 0.45rem;
     }
 
     .services-grid {
