@@ -386,6 +386,18 @@ b {
     color: var(--primary-black);
 }
 
+.services .section-title {
+    margin-bottom: 1.5rem;
+}
+
+.section-intro {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #888888;
+    font-style: italic;
+    margin-bottom: 2.4rem;
+}
+
 .section-title-wrapper {
     display: flex;
     align-items: center;
@@ -1195,6 +1207,10 @@ b {
 
     .social-links {
         margin-bottom: 0.9rem;
+    }
+
+    .section-intro {
+        margin-bottom: 1.2rem;
     }
 
     .services-grid {
