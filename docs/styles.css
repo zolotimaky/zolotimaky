@@ -882,6 +882,26 @@ b {
     font-weight: 400;
 }
 
+/* Contact details (email, location, photo credits): light 1rem text */
+.contact-info .contact-item p {
+    font-weight: 300;
+    font-size: 1rem;
+}
+
+/* Photo credits: photographer names link to their pages */
+
+.photo-credits a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgba(232, 118, 5, 0.5);
+    text-underline-offset: 3px;
+    transition: color 0.3s ease;
+}
+
+.photo-credits a:hover {
+    color: #e87605;
+}
+
 .social-links {
     display: flex;
     gap: 1rem;
