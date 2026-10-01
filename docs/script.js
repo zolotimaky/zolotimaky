@@ -86,6 +86,75 @@ window.addEventListener('scroll', () => {
     }
 });
 
+// Repertoire Carousel (dance cards) - Infinite Loop, like the News carousel.
+// The first 3 cards show first; the arrows go round in a circle (last card -> first card).
+(function () {
+    const track = document.querySelector('.repertoire-track');
+    const prev = document.getElementById('prevDance');
+    const next = document.getElementById('nextDance');
+    if (!track || !prev || !next) return;
+    const cards = Array.from(track.querySelectorAll('.service-card'));
+    const total = cards.length;
+    if (total === 0) return;
+
+    // Copies of all cards after the originals make the seamless loop
+    cards.forEach(card => {
+        const clone = card.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        clone.querySelectorAll('a').forEach(a => a.setAttribute('tabindex', '-1'));
+        track.appendChild(clone);
+    });
+
+    let index = 0;
+    let busy = false;
+
+    function step() {
+        const gap = parseFloat(getComputedStyle(track).gap) || 0;
+        return cards[0].offsetWidth + gap;
+    }
+
+    function move(smooth) {
+        track.style.transition = smooth ? 'transform 0.4s ease' : 'none';
+        track.style.transform = `translateX(${-index * step()}px)`;
+    }
+
+    function jumpTo(i) {
+        index = i;
+        move(false);
+        void track.offsetWidth; // apply the jump before the next animation
+    }
+
+    next.addEventListener('click', () => {
+        if (busy) return;
+        busy = true;
+        index++;
+        move(true);
+        setTimeout(() => {
+            if (index >= total) jumpTo(0);
+            busy = false;
+        }, 450);
+    });
+
+    prev.addEventListener('click', () => {
+        if (busy) return;
+        busy = true;
+        if (index === 0) jumpTo(total);
+        setTimeout(() => {
+            index--;
+            move(true);
+            setTimeout(() => { busy = false; }, 450);
+        }, 20);
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => move(false), 100);
+    });
+
+    move(false);
+})();
+
 // Gallery Carousel
 let currentSlide = 0;
 const galleryTrack = document.querySelector('.gallery-track');

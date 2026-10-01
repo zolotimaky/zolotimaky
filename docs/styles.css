@@ -537,13 +537,36 @@ b {
 
 /* Services Section */
 .services {
-    background: var(--bg-lighter);
+    background: #f5f5f5;
 }
 
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
+}
+
+/* Repertoire carousel: 3 dance cards visible, arrows scroll to more (same arrows as Gallery) */
+.repertoire-carousel {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.repertoire-slider {
+    overflow: hidden;
+    flex: 1;
+    padding: 6px 0 12px; /* room for the card hover lift and shadow */
+}
+
+.repertoire-track {
+    display: flex;
+    gap: 2rem;
+    transition: transform 0.4s ease;
+}
+
+.repertoire-track .service-card {
+    flex: 0 0 calc((100% - 4rem) / 3);
 }
 
 .service-card {
@@ -1217,6 +1240,14 @@ b {
         grid-template-columns: 1fr;
     }
 
+    .repertoire-carousel {
+        gap: 0.5rem;
+    }
+
+    .repertoire-track .service-card {
+        flex: 0 0 100%;
+    }
+
     .gallery-carousel {
         gap: 1rem;
     }
@@ -1362,6 +1393,10 @@ b {
 @media (min-width: 769px) and (max-width: 1024px) {
     .gallery-item {
         flex: 0 0 calc(33.333% - 0.67rem);
+    }
+
+    .repertoire-track .service-card {
+        flex: 0 0 calc((100% - 2rem) / 2);
     }
 
     .section-title {
