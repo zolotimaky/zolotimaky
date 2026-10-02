@@ -1301,7 +1301,7 @@ b {
     }
 
     .hero-subtitle {
-        font-size: 1rem;
+        font-size: min(4.8vw, 1.3rem); /* bigger on phones, grows with screen width, always 2 lines */
     }
 
     .about-content {
