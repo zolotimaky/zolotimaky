@@ -196,11 +196,16 @@ b {
     letter-spacing: 0px;
     text-decoration: none;
     cursor: pointer;
-    transition: opacity 0.3s ease;
+    -webkit-tap-highlight-color: transparent; /* no gray flash when tapped on phones */
 }
 
-.nav-brand:hover {
-    opacity: 0.8;
+/* Logo and "Zoloti Maky" stay fully visible, in their own colors, on hover/tap/click */
+.nav-brand:hover,
+.nav-brand:active,
+.nav-brand:focus,
+.nav-brand:visited {
+    opacity: 1;
+    color: var(--primary-black);
 }
 
 .nav-brand-icon {
@@ -260,7 +265,7 @@ b {
 /* Hero Section - With Background Image */
 .hero {
     min-height: 90vh;
-    background: url('images/hero-background4.jpg') center center/cover no-repeat;
+    background: #2d2d20 url('images/hero-background4.jpg') center center/cover no-repeat; /* dark tone shows while the photo loads */
     display: flex;
     align-items: center;
     justify-content: center;

@@ -188,14 +188,14 @@ find "$GALLERY_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.pn
 
     # Generate carousel item (for index.html) - thumbnail with data-fullsize attribute
     echo "                        <div class=\"gallery-item\" data-fullsize=\"$fullsize_src\">"
-    echo "                            <img src=\"$thumbnail_src\" alt=\"Zoloti Maky - $alt_text\">"
+    echo "                            <img src=\"$thumbnail_src\" alt=\"Zoloti Maky - $alt_text\" fetchpriority=\"low\" decoding=\"async\">"
     echo "                        </div>"
 
     ((count++))
 done > /tmp/gallery_carousel_items.txt
 
 # Copy for grid layout with adjusted indentation
-sed 's/^                        /                /' /tmp/gallery_carousel_items.txt > /tmp/gallery_grid_items.txt
+sed -e 's/^                        /                /' -e 's/fetchpriority="low"/loading="lazy"/' /tmp/gallery_carousel_items.txt > /tmp/gallery_grid_items.txt
 
 # Read count
 count=$(wc -l < /tmp/gallery_carousel_items.txt)
