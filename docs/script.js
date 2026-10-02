@@ -29,6 +29,35 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Top bar: keep the page below it at the right height, and pre-select
+// "Sponsorship / Donation" in the contact form when its link is clicked
+(function () {
+    const bar = document.getElementById('topBar');
+    if (!bar) return;
+    const root = document.documentElement;
+    function setBarHeight() {
+        root.style.setProperty('--topbar-h', bar.offsetHeight + 'px');
+        placeNavbar();
+    }
+    // The menu bar sits just under the top bar, and slides up to the very top
+    // of the screen as the top bar scrolls away
+    function placeNavbar() {
+        const top = Math.max(0, bar.offsetHeight - window.scrollY);
+        root.style.setProperty('--nav-top', top + 'px');
+    }
+    setBarHeight();
+    window.addEventListener('resize', setBarHeight);
+    window.addEventListener('load', setBarHeight);
+    window.addEventListener('scroll', placeNavbar, { passive: true });
+
+    document.querySelectorAll('[data-subject]').forEach(link => {
+        link.addEventListener('click', () => {
+            const subject = document.getElementById('subject');
+            if (subject) subject.value = link.getAttribute('data-subject');
+        });
+    });
+})();
+
 // Contact Form Handling with Web3Forms
 const contactForm = document.getElementById('contactForm');
 const formMessage = document.getElementById('formMessage');
