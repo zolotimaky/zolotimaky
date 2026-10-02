@@ -293,7 +293,7 @@ b {
 
 .hero-subtitle {
     font-size: 1.8rem;
-    font-weight: 500;
+    font-weight: 1000;
     margin-bottom: 2.5rem;
     color: var(--text-white);
     letter-spacing: 2px;
@@ -1301,7 +1301,7 @@ b {
     }
 
     .hero-subtitle {
-        font-size: min(4.8vw, 1.3rem); /* bigger on phones, grows with screen width, always 2 lines */
+        font-size: min(4.5vw, 1.3rem); /* bigger on phones, grows with screen width, always 2 lines */
     }
 
     .about-content {
