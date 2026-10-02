@@ -19,14 +19,35 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-            const navbarHeight = document.querySelector('.navbar').offsetHeight;
-            const targetPosition = target.offsetTop - navbarHeight;
             window.scrollTo({
-                top: targetPosition,
+                top: scrollPositionFor(target),
                 behavior: 'smooth'
             });
         }
     });
+});
+
+// Where to scroll for a section: "Home" goes to the very top (orange bar fully
+// visible); other sections stop just below the fixed menu bar
+function scrollPositionFor(target) {
+    if (target.id === 'home') return 0;
+    const navbarHeight = document.querySelector('.navbar').offsetHeight;
+    return Math.max(0, target.offsetTop - navbarHeight);
+}
+
+// Arriving from another page with a link like index.html#contact or #home:
+// correct the browser's jump so nothing hides under the menu bar
+window.addEventListener('load', () => {
+    if (!window.location.hash) return;
+    const target = document.querySelector(window.location.hash);
+    if (!target) return;
+    // after the browser's own jump to the #section, fine-tune instantly (no visible jump)
+    const fineTune = () => {
+        const top = scrollPositionFor(target);
+        if (Math.abs(window.scrollY - top) > 2) window.scrollTo({ top: top, behavior: 'instant' });
+    };
+    setTimeout(fineTune, 60);
+    setTimeout(fineTune, 400); // again, after the page has fully settled
 });
 
 // Top bar: keep the page below it at the right height, and pre-select

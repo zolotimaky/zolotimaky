@@ -1647,6 +1647,7 @@ b {
 /* Smooth Scrolling */
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 89px; /* links to #sections stop just below the fixed menu bar */
 }
 
 /* Selection Color */
