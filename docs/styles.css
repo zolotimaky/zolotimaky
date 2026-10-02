@@ -221,7 +221,7 @@ b {
 /* Hero Section - With Background Image */
 .hero {
     min-height: 90vh;
-    background: url('images/hero-background.jpg') center center/cover no-repeat;
+    background: url('images/hero-background4.jpg') center center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
