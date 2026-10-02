@@ -996,6 +996,27 @@ b {
     color: #e87605;
 }
 
+/* UACC fiscal sponsor credit + logo, under Photo Credits */
+.no-caps {
+    text-transform: none; /* keep the legal spelling 501(c)(3) inside uppercase headings */
+}
+
+.uacc-logo-link {
+    display: inline-block;
+    margin-top: 0.25rem;
+    transition: opacity 0.3s ease;
+}
+
+.uacc-logo-link:hover {
+    opacity: 0.8;
+}
+
+.uacc-logo {
+    display: block;
+    width: 110px;
+    height: auto;
+}
+
 .social-links {
     display: flex;
     gap: 1rem;
@@ -1329,7 +1350,7 @@ b {
     }
 
     /* Photo credits block needs more line spacing */
-    .contact-info .contact-item:last-child p {
+    .contact-info .contact-item p.photo-credits {
         line-height: 1.5;
     }
 
