@@ -170,9 +170,34 @@ window.addEventListener('scroll', () => {
         return cards[0].offsetWidth + gap;
     }
 
+    // Small dots under the cards (shown on phones): which dance you are on
+    const dots = document.createElement('div');
+    dots.className = 'repertoire-dots';
+    cards.forEach((card, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'repertoire-dot';
+        dot.setAttribute('aria-label', 'Show ' + (card.querySelector('h3') ? card.querySelector('h3').textContent : 'dance ' + (i + 1)));
+        dot.addEventListener('click', () => {
+            if (busy) return;
+            index = i;
+            move(true);
+        });
+        dots.appendChild(dot);
+    });
+    track.closest('.repertoire-carousel').after(dots);
+
+    function updateDots() {
+        const active = ((index % total) + total) % total;
+        dots.querySelectorAll('.repertoire-dot').forEach((d, i) => {
+            d.classList.toggle('active', i === active);
+        });
+    }
+
     function move(smooth) {
         track.style.transition = smooth ? 'transform 0.4s ease' : 'none';
         track.style.transform = `translateX(${-index * step()}px)`;
+        updateDots();
     }
 
     // Line the arrows up with the dance titles (on every screen size)
@@ -180,6 +205,16 @@ window.addEventListener('scroll', () => {
     function alignArrows() {
         const title = cards[0].querySelector('h3');
         if (!title || !carousel) return;
+        if (window.innerWidth <= 768) { // phones: arrows sit on the card, right of the dance name
+            const box = title.getBoundingClientRect();
+            const mid = box.top + box.height / 2 - carousel.getBoundingClientRect().top;
+            [prev, next].forEach(btn => {
+                btn.style.marginTop = '';
+                btn.style.top = (mid - btn.offsetHeight / 2) + 'px';
+            });
+            return;
+        }
+        [prev, next].forEach(btn => { btn.style.top = ''; });
         const titleBox = title.getBoundingClientRect();
         const top = titleBox.top + titleBox.height / 2 - carousel.getBoundingClientRect().top;
         [prev, next].forEach(btn => {

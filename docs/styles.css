@@ -1660,3 +1660,144 @@ html {
     background: var(--primary-black);
     color: var(--bg-white);
 }
+
+/* Phones: Repertoire cards and Gallery photos use the full width;
+   the arrows move below them, side by side (like In the News) */
+@media (max-width: 768px) {
+    .gallery-carousel {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0 2.5rem;
+    }
+
+    .gallery-slider {
+        flex: 0 0 100%;
+        order: 1;
+    }
+
+    .gallery-carousel .carousel-arrow {
+        order: 2;
+        margin-top: 0.5rem;
+        color: #e87605;
+    }
+
+    /* Dance cards: full width; the arrows sit on the card,
+       to the right of the dance name (their height is set by script.js) */
+    .repertoire-carousel {
+        position: relative;
+        display: block;
+    }
+
+    .repertoire-carousel .carousel-arrow {
+        position: absolute;
+        z-index: 2;
+        width: 34px;
+        height: 34px;
+        font-size: 1.9rem;
+        margin: 0 !important;
+        color: #e87605;
+    }
+
+    .repertoire-carousel .carousel-arrow-left {
+        display: none; /* phones: only the forward arrow (the cards loop) */
+    }
+
+    .repertoire-carousel .carousel-arrow-right {
+        right: 1.25rem;
+    }
+
+    .repertoire-track .service-card h3 {
+        padding-right: 44px; /* keep long dance names clear of the arrow */
+    }
+
+    /* Dots under the dance cards: which dance is showing */
+    .repertoire-dots {
+        display: flex;
+        justify-content: center;
+        gap: 2px;
+        margin-top: 0.9rem;
+    }
+
+    .repertoire-dot {
+        width: 14px;          /* comfortable tap area... */
+        height: 18px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        position: relative;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .repertoire-dot::after {  /* ...around a small dot */
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #d0d0d0;  /* light gray */
+        transform: translate(-50%, -50%);
+        transition: background 0.3s ease;
+    }
+
+    .repertoire-dot.active::after {
+        background: #555555;  /* dark gray */
+    }
+
+    .service-content {
+        padding: 1.5rem 1.25rem;
+    }
+
+    /* Compact contact form: fits on one phone screen */
+    .contact-form-container {
+        padding: 1.25rem 1.25rem 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 0.85rem;
+    }
+
+    .form-group label {
+        margin-bottom: 0.3rem;
+        font-size: 0.85rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 10px 12px;
+        font-size: 16px; /* 16px stops iPhones from zooming in when typing */
+    }
+
+    .form-group textarea {
+        height: 96px;
+        min-height: 96px;
+    }
+
+    /* Email, location, social icons, credits: same left line as the form's
+       fields and Send Message button (the form's inner padding) */
+    .contact-info {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+
+    /* Slim footer line */
+    .footer {
+        padding: 0.7rem 0;
+    }
+
+    .footer p {
+        font-size: 0.75rem;
+        line-height: 1.4;
+        margin: 0;
+    }
+}
+
+/* The dance-card dots are only used on phones */
+@media (min-width: 769px) {
+    .repertoire-dots {
+        display: none;
+    }
+}
