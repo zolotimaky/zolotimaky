@@ -292,7 +292,7 @@ b {
 }
 
 .hero-subtitle {
-    font-size: 1.2rem;
+    font-size: 1.8rem;
     font-weight: 500;
     margin-bottom: 2.5rem;
     color: var(--text-white);
@@ -533,6 +533,100 @@ b {
     height: 500px;
     font-size: 1rem;
     color: var(--text-muted);
+}
+
+/* Upcoming Shows ("Where You Can See Us") - compact date cards under the main photo */
+.shows {
+    background: #f5f5f5;
+    padding: 36px 0 40px;
+}
+
+.shows .section-title {
+    margin-bottom: 1.25rem;
+    font-size: 1.2rem;
+    color: rgba(0, 0, 0, 0.35);
+}
+
+.shows-grid {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 1080px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+}
+
+.show-card {
+    background: var(--bg-white);
+    border: 1.5px solid #e87605;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.show-date {
+    flex-shrink: 0;
+    min-width: 64px;
+    text-align: center;
+    color: #e87605;
+    line-height: 1;
+}
+
+.show-month {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.show-day {
+    display: block;
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin: 0.15rem 0;
+}
+
+.show-year {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+
+.show-info {
+    border-left: 1px solid rgba(232, 118, 5, 0.3);
+    padding-left: 1rem;
+}
+
+.show-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.15rem;
+    color: var(--primary-black);
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.show-place {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--text-gray);
+    margin: 0;
+}
+
+.show-title a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgba(232, 118, 5, 0.5);
+    text-underline-offset: 4px;
+    transition: color 0.3s ease;
+}
+
+.show-title a:hover {
+    color: #e87605;
 }
 
 /* Services Section */
@@ -1258,6 +1352,14 @@ b {
 
     .services-grid {
         grid-template-columns: 1fr;
+    }
+
+    .shows {
+        padding: 30px 0 34px;
+    }
+
+    .shows-grid {
+        gap: 0.75rem;
     }
 
     .repertoire-carousel {
