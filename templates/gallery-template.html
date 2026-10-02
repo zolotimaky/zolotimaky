@@ -9,7 +9,7 @@
     <style>
         /* Gallery-specific styles */
         .gallery-page {
-            padding: 200px 0 100px 0;
+            padding: calc(200px + var(--topbar-h)) 0 100px 0;
             min-height: 100vh;
         }
 
@@ -62,6 +62,11 @@
     </style>
 </head>
 <body>
+    <!-- Top bar: sponsors & donations (scrolls away; the menu below stays fixed) -->
+    <div class="top-bar" id="topBar">
+        <p>Behind every Hopak jump is a lot of support. Be part of it – become a <a href="index.html?subject=sponsorship-donation#contact" class="top-bar-link">sponsor or donate</a>!</p>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
@@ -71,9 +76,11 @@
             </a>
             <ul class="nav-menu">
                 <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#shows">Shows</a></li>
                 <li><a href="index.html#about">About</a></li>
-                <li><a href="index.html#services">Packages</a></li>
+                <li><a href="index.html#services">Repertoire</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="index.html#news">News</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
             </ul>
             <div class="nav-toggle" id="navToggle">

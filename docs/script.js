@@ -50,6 +50,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     window.addEventListener('load', setBarHeight);
     window.addEventListener('scroll', placeNavbar, { passive: true });
 
+    // Coming from the Gallery page's top bar (index.html?subject=...#contact)
+    const wanted = new URLSearchParams(window.location.search).get('subject');
+    const subjectSelect = document.getElementById('subject');
+    if (wanted && subjectSelect && subjectSelect.querySelector(`option[value="${wanted}"]`)) {
+        subjectSelect.value = wanted;
+    }
+
     document.querySelectorAll('[data-subject]').forEach(link => {
         link.addEventListener('click', () => {
             const subject = document.getElementById('subject');
