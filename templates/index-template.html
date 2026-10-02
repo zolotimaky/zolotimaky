@@ -26,6 +26,134 @@
     <link rel="preload" href="images/zm_logo_words.svg" as="image" type="image/svg+xml">
     <link rel="preload" href="images/zm_logo_vinok.svg" as="image" type="image/svg+xml">
     <link rel="stylesheet" href="styles.css">
+    <!-- Structured data for Google and AI assistants (schema.org). Keep the events in sync with "Where You Can See Us". -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "DanceGroup",
+          "@id": "https://zolotimaky.org/#organization",
+          "name": "Zoloti Maky",
+          "alternateName": "Zoloti Maky Ukrainian Dance Ensemble",
+          "url": "https://zolotimaky.org/",
+          "logo": "https://zolotimaky.org/images/logo_pix.png",
+          "image": "https://zolotimaky.org/images/og-image.jpg",
+          "description": "Zoloti Maky is a San Francisco Ukrainian dance ensemble performing traditional folk dances and original choreography at festivals and events in the Bay Area. Named after California's Golden Poppy (zoloti means golden, maky means poppies).",
+          "email": "zolotimaky@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "San Francisco",
+            "addressRegion": "CA",
+            "addressCountry": "US"
+          },
+          "areaServed": "San Francisco Bay Area",
+          "sameAs": [
+            "https://www.instagram.com/zolotimaky/",
+            "https://www.facebook.com/zolotimakydanceensemble"
+          ],
+          "parentOrganization": {
+            "@type": "NGO",
+            "name": "UACC (Ukrainian American Coordinating Council)",
+            "url": "https://uaccusa.org"
+          },
+          "knowsAbout": [
+            "Ukrainian folk dance",
+            "Pryvit",
+            "Hopak",
+            "Hutsulka",
+            "Koketka",
+            "Shchedryk",
+            "Devyatka"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://zolotimaky.org/#website",
+          "name": "Zoloti Maky",
+          "url": "https://zolotimaky.org/",
+          "publisher": {
+            "@id": "https://zolotimaky.org/#organization"
+          },
+          "inLanguage": "en"
+        },
+        {
+          "@type": "DanceEvent",
+          "name": "World of Dumplings",
+          "startDate": "2026-10-25",
+          "eventStatus": "https://schema.org/EventScheduled",
+          "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+          "location": {
+            "@type": "Place",
+            "name": "World of Dumplings",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "San Francisco",
+              "addressRegion": "CA",
+              "addressCountry": "US"
+            }
+          },
+          "performer": {
+            "@id": "https://zolotimaky.org/#organization"
+          },
+          "image": [
+            "https://zolotimaky.org/images/og-image.jpg"
+          ],
+          "description": "Zoloti Maky Ukrainian Dance Ensemble performs at World of Dumplings.",
+          "url": "https://www.eventbrite.com/e/world-of-dumplings-2026-tickets-1997773482264"
+        },
+        {
+          "@type": "DanceEvent",
+          "name": "Sister City Friendship Dinner",
+          "startDate": "2027-01-30",
+          "eventStatus": "https://schema.org/EventScheduled",
+          "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+          "location": {
+            "@type": "Place",
+            "name": "Sister City Friendship Dinner",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Sebastopol",
+              "addressRegion": "CA",
+              "addressCountry": "US"
+            }
+          },
+          "performer": {
+            "@id": "https://zolotimaky.org/#organization"
+          },
+          "image": [
+            "https://zolotimaky.org/images/og-image.jpg"
+          ],
+          "description": "Zoloti Maky Ukrainian Dance Ensemble performs at Sister City Friendship Dinner.",
+          "url": "https://sebastopolwf.org/category/sister-cities-friendship-dinner/"
+        },
+        {
+          "@type": "DanceEvent",
+          "name": "Independence Day of Ukraine",
+          "startDate": "2027-08-22",
+          "eventStatus": "https://schema.org/EventScheduled",
+          "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+          "location": {
+            "@type": "Place",
+            "name": "Golden Gate Park",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "San Francisco",
+              "addressRegion": "CA",
+              "addressCountry": "US"
+            }
+          },
+          "performer": {
+            "@id": "https://zolotimaky.org/#organization"
+          },
+          "image": [
+            "https://zolotimaky.org/images/og-image.jpg"
+          ],
+          "description": "Zoloti Maky Ukrainian Dance Ensemble performs at Independence Day of Ukraine."
+        }
+      ]
+    }
+    </script>
 </head>
 <body>
     <!-- Top bar: sponsors & donations (scrolls away; the menu below stays fixed) -->
