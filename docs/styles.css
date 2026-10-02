@@ -643,7 +643,7 @@ b {
 /* Repertoire carousel: 3 dance cards visible, arrows scroll to more (same arrows as Gallery) */
 .repertoire-carousel {
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* arrows are lined up with the dance titles by script.js */
     gap: 1rem;
 }
 

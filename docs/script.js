@@ -118,6 +118,18 @@ window.addEventListener('scroll', () => {
         track.style.transform = `translateX(${-index * step()}px)`;
     }
 
+    // Line the arrows up with the dance titles (on every screen size)
+    const carousel = track.closest('.repertoire-carousel');
+    function alignArrows() {
+        const title = cards[0].querySelector('h3');
+        if (!title || !carousel) return;
+        const titleBox = title.getBoundingClientRect();
+        const top = titleBox.top + titleBox.height / 2 - carousel.getBoundingClientRect().top;
+        [prev, next].forEach(btn => {
+            btn.style.marginTop = Math.max(0, top - btn.offsetHeight / 2) + 'px';
+        });
+    }
+
     function jumpTo(i) {
         index = i;
         move(false);
@@ -149,10 +161,12 @@ window.addEventListener('scroll', () => {
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => move(false), 100);
+        resizeTimer = setTimeout(() => { move(false); alignArrows(); }, 100);
     });
 
     move(false);
+    alignArrows();
+    window.addEventListener('load', alignArrows);
 })();
 
 // Gallery Carousel
