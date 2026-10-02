@@ -144,7 +144,7 @@ b {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.2rem 20px;
+    padding: 0.75rem 20px;
 }
 
 .nav-brand {
