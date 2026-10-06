@@ -86,6 +86,38 @@ window.addEventListener('load', () => {
     });
 })();
 
+// Google Analytics: count the clicks that matter (see Reports > Engagement > Events)
+function track(eventName, params) {
+    if (typeof window.gtag === 'function') window.gtag('event', eventName, params || {});
+}
+
+document.addEventListener('click', (e) => {
+    const link = e.target.closest('a, button');
+    if (!link) return;
+
+    // "sponsor or donate" in the orange top bar (main page and gallery page)
+    if (link.closest('.top-bar')) {
+        track('sponsor_donate_click', { page: location.pathname.split('/').pop() || 'index.html' });
+        return;
+    }
+    // Event links in "Where You Can See Us"
+    if (link.closest('.show-card')) {
+        track('show_link_click', { show_name: link.textContent.trim() });
+        return;
+    }
+    // "Invite us" on a dance card
+    if (link.classList.contains('btn-package') && link.closest('.service-card')) {
+        const dance = link.closest('.service-card').querySelector('h3');
+        track('invite_us_click', { dance: dance ? dance.textContent.trim() : '' });
+        return;
+    }
+    // "Get in Touch" on the main photo, and "Book Zoloti Maky for your event!"
+    if (link.matches('.hero .btn') || link.closest('.about-text')) {
+        track('booking_button_click', { button: link.textContent.trim() });
+        return;
+    }
+});
+
 // Contact Form Handling with Web3Forms
 const contactForm = document.getElementById('contactForm');
 const formMessage = document.getElementById('formMessage');
@@ -106,6 +138,7 @@ if (contactForm && formMessage) {
             const data = await response.json();
 
             if (data.success) {
+                track('contact_form_sent', { subject: formData.get('subject') || '' });
                 formMessage.textContent = 'Thanks for reaching out!';
                 formMessage.className = 'form-message success';
                 formMessage.style.display = 'block';
